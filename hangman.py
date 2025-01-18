@@ -1,6 +1,6 @@
 import random
+from words import words
 
-words = ("apple", "banana", "monkey", "cat")
 hangman = {0: ("     ",
                "     ",
                "     "),
