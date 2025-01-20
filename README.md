@@ -42,15 +42,6 @@ This is a simple command-line Hangman game built using Python. The player has to
    python hangman.py
    ```
 
-## 📂 Project Structure
-
-```
-📦 hangman
-├── 📜 hangman.py    # Main game script
-├── 📜 README.md     # Project documentation
-└── 📜 words.py     # List of words for the game
-```
-
 ## 🤝 Contributing
 
 Feel free to fork this repository and submit pull requests with improvements or new features!
