@@ -1,27 +1,8 @@
 import random
-from words import words
+from wordList import words
+from arts import hangman_ghost_art
+from arts import hangman
 
-hangman = {0: ("     ",
-               "     ",
-               "     "),
-           1: ("  O  ",
-               "     ",
-               "     "),
-           2: ("  O  ",
-               "  |  ",
-               "     "),
-           3: ("  O  ",
-               " /|  ",
-               "     "),
-           4: ("  O  ",
-               " /|\\",
-               "     "),
-           5: ("  O  ",
-               " /|\\",
-               " /   "),
-           6: ("  O  ",
-               " /|\\",
-               " / \\")}
 
 def display_man(tries):
     print ("*********")
@@ -36,6 +17,7 @@ def display_word(hidden_word):
     print(" ".join(hidden_word))
 
 def main():
+    print(hangman_ghost_art)
     hidden_word = random.choice(words)
     hint = ["_"] * len(hidden_word)
     tries = 0
