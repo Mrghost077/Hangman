@@ -40,25 +40,22 @@ def check_game_status(hidden_word, hint, tries, canvas, word_label, root):
 # Handle the letter guess
 def guess_letter(letter, hidden_word, guessed_letters, tries, canvas, word_label, root):
     if letter in guessed_letters:
-        print(f"You already guessed {letter}!")
+        messagebox.showinfo("Info", f"You have already guessed the letter '{letter}'!")
         return
 
     guessed_letters.add(letter)
-    print(f"Guessed Letters: {guessed_letters}")
 
     # Update hint based on guessed letter
     hint = update_word_display(hidden_word, guessed_letters, word_label)
-    print(f"Hidden Word: {hidden_word}")
-    print(f"Hint: {hint}")
 
     if letter in hidden_word:
-        print(f"Correct guess: {letter}")
+       pass
     else:
-        tries[0] += 1
+        tries[0] += 1  
         display_man(canvas, tries)
-        print(f"Tries: {tries[0]}")
 
     check_game_status(hidden_word, hint, tries, canvas, word_label, root)
+
 
 # Remove the intro and start the game
 def start_game(root, intro_frame, canvas, hidden_word, word_label, guessed_letters, tries):
@@ -86,7 +83,7 @@ def create_gui():
     # ASCII art intro frame
     intro_frame = tk.Frame(root, bg="black")
     intro_frame.grid(row=0, column=0, columnspan=10)
-    intro_label = tk.Label(intro_frame, text=hangman_ghost_art, font=("Courier", 10), fg="white", bg="black")  # Adjust font size for better aspect ratio, white color
+    intro_label = tk.Label(intro_frame, text=hangman_ghost_art, font=("Courier", 10), fg="white", bg="black") 
     intro_label.pack()
 
     # Canvas for Hangman
