@@ -22,7 +22,7 @@ hangman_ghost_art = """
  
    Beware... Guess wisely!
  
-Created by Mr. Ghost 👻
+Created by Mr. Ghost (Safwan) 👻
 """
 
 # hangman dictionary art
