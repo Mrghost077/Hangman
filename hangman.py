@@ -48,11 +48,17 @@ class HangmanGame:
         self.word_label.config(text=" ".join(hint), fg="red")
         return hint
 
+    def calculate_score(self):
+        max_tries = len(hangman) - 1
+        score = ((max_tries - self.tries[0]) * 100) // max_tries 
+        return score
+
     def check_game_status(self, hint):
         if "_" not in hint:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
-            if messagebox.askyesno("Game Over", "YOU WON !!!\nThe ghost vanishes, and your friend is saved!\nDo you want to play again?"):
+            score = self.calculate_score()
+            if messagebox.askyesno("Game Over", f"YOU WON !!!\nScore: {score}\nThe ghost vanishes, and your friend is saved!\nDo you want to play again?"):
                 self.root.destroy()
                 main()
             else:
@@ -60,7 +66,8 @@ class HangmanGame:
         elif self.tries[0] >= len(hangman) - 1:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
-            if messagebox.askyesno("Game Over", "YOU LOST !!!\nYour friend hangs as the ghost laughs...\nDo you want to play again?"):
+            score = self.calculate_score()
+            if messagebox.askyesno("Game Over", f"YOU LOST !!!\nScore: {score}\nYour friend hangs as the ghost laughs...\nDo you want to play again?"):
                 self.root.destroy()
                 main()
             else:
