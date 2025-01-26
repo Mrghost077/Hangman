@@ -18,21 +18,19 @@ class HangmanGame:
     def setup_gui(self):
         # Set up the root window
         self.root.title("Hangman Game")
-        self.root.configure(bg="black")
+        self.root.configure(bg="#2C2C2C") 
 
         # ASCII art intro frame
         self.intro_frame = tk.Frame(self.root, bg="black")
-        self.intro_frame.grid(row=0, column=0, columnspan=10)
-        intro_label = tk.Label(self.intro_frame, text=hangman_ghost_art, font=("Courier", 10), fg="white", bg="black")
+        self.intro_frame.grid(row=0, column=0, columnspan=10, pady=10)
+        intro_label = tk.Label(self.intro_frame, text=hangman_ghost_art, font=("Courier", 12), fg="white", bg="black")
         intro_label.pack()
 
         # Canvas for Hangman
-        self.canvas = tk.Canvas(self.root, width=300, height=400, bg="black")
-        self.canvas.grid(row=1, column=0, columnspan=10, padx=10, pady=10)
+        self.canvas = tk.Canvas(self.root, width=300, height=400, bg="#2C2C2C")
 
         # Word display (hidden initially)
-        self.word_label = tk.Label(self.root, text=" ".join(["_"] * len(self.hidden_word)), font=("Arial", 24), fg="red", bg="black")
-        self.word_label.grid(row=2, column=0, columnspan=10)
+        self.word_label = tk.Label(self.root, text=" ".join(["_"] * len(self.hidden_word)), font=("Arial", 24), fg="red", bg="#2C2C2C")
 
         # Schedule the start of the game after 3 seconds
         self.root.after(3000, self.start_game)
@@ -81,16 +79,26 @@ class HangmanGame:
         if letter not in self.hidden_word:
             self.tries[0] += 1
             self.display_man()
+            self.word_label.config(fg="red")
+            self.canvas.config(bg="red") 
+        else:
+            self.word_label.config(fg="green") 
+            self.canvas.config(bg="green") 
 
         self.check_game_status(hint)
 
     def start_game(self):
         self.intro_frame.destroy()
+        
+        #display the canvas for Hangman
+        self.canvas.grid(row=1, column=0, columnspan=10, padx=10, pady=10)
+        
         self.word_label.grid(row=2, column=0, columnspan=10)
 
         for i, letter in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
             tk.Button(self.root, text=letter, width=3, font=("Arial", 14),
-                      command=lambda l=letter: self.guess_letter(l)).grid(row=3 + i // 10, column=i % 10)
+                      command=lambda l=letter: self.guess_letter(l),
+                      bg="white", fg="black", activebackground="#D32F2F", activeforeground="white").grid(row=3 + i // 10, column=i % 10, padx=5, pady=5)
 
         self.display_man()
 
