@@ -1,7 +1,6 @@
 # word list for the game
 
 words = [
-    # Fruits
     "apple", "banana", "cherry", "grape", "mango", "orange", 
     "peach", "strawberry", "blueberry", "watermelon", "pineapple", 
     "kiwi", "lemon", "coconut", "avocado", "papaya", "pear", "plum", 
@@ -22,5 +21,4 @@ words = [
     "glasses", "watch", "pen", "mirror", "plate",
     "school", "garden", "hand", "joke", "game", 
     "bridge", "road", "train", "car", "airplane", 
-    "boat", "rocket", "city", "village", "castle"
-]
+    "boat", "rocket", "city", "village", "castle"]
