@@ -11,6 +11,8 @@ This is a simple command-line Hangman game built using Python. The player has to
 - Tracking of guessed letters
 - Limited attempts with a hangman visual
 - User-friendly console interaction
+- Graphical user interface (Using tkinter)
+- Visual Feedbacks
 
 ## 📌 How to Play
 
