@@ -1,12 +1,14 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 import random
+import json
 from wordList import words
 from arts import hangman_ghost_art
 from arts import hangman
 
 class HangmanGame:
     incident_storyline = "Find the magic word to save your friend."
+    scores_file = 'leaderboard.json'
 
     def __init__(self, root):
         self.root = root
@@ -18,7 +20,7 @@ class HangmanGame:
     def setup_gui(self):
         # Set up the root window
         self.root.title("Hangman Game")
-        self.root.configure(bg="#2C2C2C") 
+        self.root.configure(bg="#2C2C2C")
 
         # ASCII art intro frame
         self.intro_frame = tk.Frame(self.root, bg="black")
@@ -53,16 +55,58 @@ class HangmanGame:
         score = ((max_tries - self.tries[0]) * 100) // max_tries 
         return score
 
+    def save_score(self, player_name, score):
+        try:
+            with open(self.scores_file, 'r') as file:
+                leaderboard = json.load(file)
+        except FileNotFoundError:
+            leaderboard = []
+
+        leaderboard.append({'player_name': player_name, 'score': score})
+        leaderboard.sort(key=lambda x: x['score'], reverse=True)
+
+        with open(self.scores_file, 'w') as file:
+            json.dump(leaderboard, file)
+
+    def display_leaderboard(self):
+        try:
+            with open(self.scores_file, 'r') as file:
+                leaderboard = json.load(file)
+        except FileNotFoundError:
+            leaderboard = []
+
+        leaderboard_window = tk.Tk()  # Create a separate Tk instance for the leaderboard
+        leaderboard_window.title("Leaderboard")
+        leaderboard_window.configure(bg="#2C2C2C")
+
+        tk.Label(leaderboard_window, text="Leaderboard", font=("Arial", 18), fg="white", bg="#2C2C2C").pack(pady=10)
+        for idx, entry in enumerate(leaderboard[:10]):
+            tk.Label(leaderboard_window, text=f"{idx + 1}. {entry['player_name']} - {entry['score']}",
+                     font=("Arial", 14), fg="white", bg="#2C2C2C").pack(pady=2)
+
+        def close_leaderboard():
+            leaderboard_window.destroy()
+
+        # Schedule the leaderboard window to close after 5 seconds
+        leaderboard_window.after(5000, close_leaderboard)
+
+        # Start the main loop for the leaderboard window
+        leaderboard_window.mainloop()
+
     def check_game_status(self, hint):
         if "_" not in hint:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
             score = self.calculate_score()
+            player_name = simpledialog.askstring("Congratulations!", "You won! Enter your name:")
+            if player_name:
+                self.save_score(player_name, score)
             if messagebox.askyesno("Game Over", f"YOU WON !!!\nScore: {score}\nThe ghost vanishes, and your friend is saved!\nDo you want to play again?"):
                 self.root.destroy()
                 main()
             else:
-                self.root.quit()
+                self.root.destroy()  # Close the game window
+                self.display_leaderboard()
         elif self.tries[0] >= len(hangman) - 1:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
@@ -71,7 +115,8 @@ class HangmanGame:
                 self.root.destroy()
                 main()
             else:
-                self.root.quit()
+                self.root.destroy()  # Close the game window
+                self.display_leaderboard()
 
     def guess_letter(self, letter):
         if letter in self.guessed_letters:
@@ -87,17 +132,17 @@ class HangmanGame:
             self.tries[0] += 1
             self.display_man()
             self.word_label.config(fg="red")
-            self.canvas.config(bg="red") 
+            self.canvas.config(bg="red")
         else:
-            self.word_label.config(fg="green") 
-            self.canvas.config(bg="green") 
+            self.word_label.config(fg="green")
+            self.canvas.config(bg="green")
 
         self.check_game_status(hint)
 
     def start_game(self):
         self.intro_frame.destroy()
         
-        #display the canvas for Hangman
+        # Display the canvas for Hangman
         self.canvas.grid(row=1, column=0, columnspan=10, padx=10, pady=10)
         
         self.word_label.grid(row=2, column=0, columnspan=10)
