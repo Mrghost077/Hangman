@@ -75,7 +75,7 @@ class HangmanGame:
         except FileNotFoundError:
             leaderboard = []
 
-        leaderboard_window = tk.Tk()  # Create a separate Tk instance for the leaderboard
+        leaderboard_window = tk.Tk()  
         leaderboard_window.title("Leaderboard")
         leaderboard_window.configure(bg="#2C2C2C")
 
@@ -105,7 +105,7 @@ class HangmanGame:
                 self.root.destroy()
                 main()
             else:
-                self.root.destroy()  # Close the game window
+                self.root.destroy()  
                 self.display_leaderboard()
         elif self.tries[0] >= len(hangman) - 1:
             self.display_man()
@@ -115,7 +115,7 @@ class HangmanGame:
                 self.root.destroy()
                 main()
             else:
-                self.root.destroy()  # Close the game window
+                self.root.destroy() 
                 self.display_leaderboard()
 
     def guess_letter(self, letter):
