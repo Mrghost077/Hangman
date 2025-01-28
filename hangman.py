@@ -64,9 +64,12 @@ class HangmanGame:
 
         leaderboard.append({'player_name': player_name, 'score': score})
         leaderboard.sort(key=lambda x: x['score'], reverse=True)
-
+    
         with open(self.scores_file, 'w') as file:
             json.dump(leaderboard, file)
+
+
+
 
     def display_leaderboard(self):
         try:
@@ -98,9 +101,19 @@ class HangmanGame:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
             score = self.calculate_score()
-            player_name = simpledialog.askstring("Congratulations!", "You won! Enter your name:")
-            if player_name:
-                self.save_score(player_name, score)
+        
+            # Check if the new score is a high score
+            try:
+                with open(self.scores_file, 'r') as file:
+                    leaderboard = json.load(file)
+            except FileNotFoundError:
+                leaderboard = []
+
+            if all(score > entry['score'] for entry in leaderboard):
+                player_name = simpledialog.askstring("Congratulations!", "You won! Enter your name:")
+                if player_name:
+                    self.save_score(player_name, score)
+        
             if messagebox.askyesno("Game Over", f"YOU WON !!!\nScore: {score}\nThe ghost vanishes, and your friend is saved!\nDo you want to play again?"):
                 self.root.destroy()
                 main()
@@ -111,12 +124,14 @@ class HangmanGame:
             self.display_man()
             self.word_label.config(text=" ".join(self.hidden_word))
             score = self.calculate_score()
+        
             if messagebox.askyesno("Game Over", f"YOU LOST !!!\nScore: {score}\nYour friend hangs as the ghost laughs...\nDo you want to play again?"):
                 self.root.destroy()
                 main()
             else:
                 self.root.destroy() 
                 self.display_leaderboard()
+
 
     def guess_letter(self, letter):
         if letter in self.guessed_letters:
